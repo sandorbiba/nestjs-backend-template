@@ -5,6 +5,7 @@ import config from './config/keys';
 import { BlogModule } from './blog-post/blog-post.module';
 import { TypegooseModule } from 'nestjs-typegoose';
 import { UserModule } from './user/user.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -22,6 +23,7 @@ import { UserModule } from './user/user.module';
       },
     }),
     UserModule,
+    AuthModule,
   ],
   controllers: [BlogPostController],
   providers: [BlogPostService],

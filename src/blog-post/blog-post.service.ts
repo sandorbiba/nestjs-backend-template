@@ -1,7 +1,8 @@
 import { Injectable } from '@nestjs/common';
-import { DocumentType, ReturnModelType } from '@typegoose/typegoose';
+import { DocumentType, mongoose, ReturnModelType } from '@typegoose/typegoose';
 import { InjectModel } from 'nestjs-typegoose';
 import { BlogPost } from './blog-post.model';
+import { CreateBlogDto } from './dto/create-blog-post.dto';
 
 @Injectable()
 export class BlogPostService {
@@ -18,8 +19,10 @@ export class BlogPostService {
     return this.blogPostModel.findOne({ _id: id });
   }
 
-  async create(post: BlogPost): Promise<DocumentType<BlogPost>> {
-    const newBlog = new this.blogPostModel(post);
+  async create(post: CreateBlogDto): Promise<DocumentType<BlogPost>> {
+    const { user, ...rest } = post;
+    const userId = mongoose.Types.ObjectId(user);
+    const newBlog = new this.blogPostModel({ user: userId, ...rest });
     return newBlog.save();
   }
 
@@ -27,7 +30,16 @@ export class BlogPostService {
     return this.blogPostModel.findByIdAndRemove(id);
   }
 
-  async update(id: string, post: BlogPost): Promise<DocumentType<BlogPost>> {
-    return this.blogPostModel.findByIdAndUpdate(id, post, { new: true });
+  async update(
+    id: string,
+    post: CreateBlogDto,
+  ): Promise<DocumentType<BlogPost>> {
+    const { user, ...rest } = post;
+    const userId = mongoose.Types.ObjectId(user);
+    return this.blogPostModel.findByIdAndUpdate(
+      id,
+      { user: userId, ...rest },
+      { new: true },
+    );
   }
 }

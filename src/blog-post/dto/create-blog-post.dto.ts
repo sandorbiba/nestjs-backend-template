@@ -21,5 +21,5 @@ export class CreateBlogDto {
 
   @ApiProperty()
   @IsNotEmpty()
-  readonly user: Types.ObjectId;
+  readonly user: string;
 }

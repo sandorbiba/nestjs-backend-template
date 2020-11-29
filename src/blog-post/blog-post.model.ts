@@ -1,6 +1,6 @@
 import { prop, Ref } from '@typegoose/typegoose';
 import { IsDate, IsNotEmpty, IsString } from 'class-validator';
-import { User } from 'src/user/user.model';
+import { User } from '../user/user.model';
 
 export class BlogPost {
   @prop()
