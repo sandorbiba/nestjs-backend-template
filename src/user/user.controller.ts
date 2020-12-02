@@ -1,4 +1,11 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import {
+  BadRequestException,
+  Body,
+  Controller,
+  Get,
+  Param,
+  Post,
+} from '@nestjs/common';
 import { UserService } from './user.service';
 import { ApiBody, ApiParam, ApiTags } from '@nestjs/swagger';
 import { CreateUserDto } from './dto/user.dto';
@@ -18,7 +25,10 @@ export class UserController {
 
   @Post()
   @ApiBody({ type: CreateUserDto })
-  create(@Body() CreateUserDto: CreateUserDto): Promise<DocumentType<User>> {
-    return this.userService.create(CreateUserDto);
+  create(@Body() createUserDto: CreateUserDto): Promise<DocumentType<User>> {
+    if (createUserDto.password === createUserDto.confirmPassword) {
+      return this.userService.create(createUserDto);
+    }
+    throw new BadRequestException();
   }
 }
