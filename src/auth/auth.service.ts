@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { UserService } from '../user/user.service';
 import bcrypt from 'bcrypt';
 
@@ -14,7 +14,8 @@ export class AuthService {
     const match = await bcrypt.compare(password, user.password);
 
     if (!match) {
-      console.log(`Password did not match for user: ${username}`);
+      const logger = new Logger('bootstrap');
+      logger.warn(`Password did not match for user: ${username}`);
       return null;
     }
     const { _id, profilePicture } = user;

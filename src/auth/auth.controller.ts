@@ -7,7 +7,7 @@ import { LoginDto } from './dto/login.dto';
 @ApiTags('auth')
 export class AuthController {
   @UseGuards(AuthGuard('local'))
-  @Post('auth/login')
+  @Post('/login')
   @ApiBody({ type: LoginDto })
   async login(@Req() req: Request & { user: any }) {
     return req.user;
